@@ -103,23 +103,38 @@ int main() {
             int f = get<0>(it2->second); // current friendship
             if (f > 0) f--;              // don't go below 0
             get<0>(it2->second) = f;     // write it back
-            cout << "OK: " << name << " -> " << f << "\n";
-    }
+            cout << "OK: " << name << " -> " << f << "\n";}
 
         // show everything after this action
         cout << "Villager details:\n";
         for (map<string, tuple<int,string,string>>::iterator itp = villagers.begin(); itp != villagers.end(); ++itp) {
-            cout << itp->first << " ["<< get<0>(itp->second) << ", " << get<1>(itp->second) << ", " << get<2>(itp->second) << "]\n";
+            cout << itp->first << " ["<< get<0>(itp->second) << ", " << get<1>(itp->second) << ", " << get<2>(itp->second) << "]\n";}
+    }
+//==================case 3 Search for Villager =======================
+        else if (choice == 3) { // search
+        string name;
+        cout << "Name to search: ";
+        getline(cin, name);                     // read a whole line
+
+        auto it2 = villagers.find(name);       // look up by name
+        if (it2 == villagers.end()) {
+            cout << "Not found.\n"; }           // no such villager
+        else {    // print this one
+            cout << it2->first << " [" << get<0>(it2->second) << ", " << get<1>(it2->second) << ", " << get<2>(it2->second) << "]\n";
+    }
+
+        // print all after the action 
+        cout << "Villager details:\n";
+        for (map<string, tuple<int,string,string>>::iterator itp = villagers.begin(); itp != villagers.end(); ++itp) {
+            cout << itp->first << " [" << get<0>(itp->second) << ", " << get<1>(itp->second) << ", " << get<2>(itp->second) << "]\n";
+        }
+    }
+//========== case 4 exit==========
+        else if (choice == 4) { // exit
+        cout << "Bye.\n";
+        break;
     }
 }
-
-
-
-
-
-
-
-    }
 
     return 0;
 }
