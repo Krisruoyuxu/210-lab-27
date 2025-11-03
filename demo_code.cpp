@@ -12,15 +12,12 @@ int main() {
     villagers["Audie"]   = make_tuple(7,  string("Wolf"),     string("Yeah!")); 
     villagers["Raymond"] = make_tuple(8,  string("Cat"),      string("Nice!")); 
     villagers["Marshal"] = make_tuple(5,  string("Squirrel"), string("Oh?"));   
-    
-    /*// access the map using a range-based for loop
-    cout << "Villagers and their favorite colors (range-based for loop):" << endl;
-    for (auto pair : villagerColors) {
-        cout << pair.first << ": ";
-        for (auto color : pair.second)
-            cout << color << " ";
-        cout << endl;
-    }
+
+    // access the map using a range-based for loop
+    cout << "Villager details (range-based for loop):" << endl;                  
+    for (auto p : villagers) {       // print: friendship level, species, catchphrase                                              
+        cout << p.first << " [" << get<0>(p.second) << ", " << get<1>(p.second) << ", " << get<2>(p.second) << "]\n";                                
+}
 
     // access the map using iterators
     cout << "\nVillagers and their favorite colors (iterators):" << endl;
@@ -34,7 +31,7 @@ int main() {
     }
 
     // delete an element
-    villagerColors.erase("Raymond");
+    villagers.erase("Raymond");
 
     // search for an element using .find() to avoid errors
     string searchKey = "Audie";
@@ -52,6 +49,6 @@ int main() {
     cout << "\nSize before clear: " << villagerColors.size() << endl;
     villagerColors.clear();
     cout << "Size after clear: " << villagerColors.size() << endl;
-    */
+    
     return 0;
 }
