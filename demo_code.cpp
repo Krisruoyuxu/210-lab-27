@@ -67,7 +67,8 @@ int main() {
         cout << "Invalid input.\n";
         continue;                    // ask again
     }
-        if (choice == 1) { // increase
+    // ================== case 1 increase================
+        if (choice == 1) { 
         string name;
         cout << "Name to increase: ";
         getline(cin, name); // read the whole line
@@ -89,8 +90,28 @@ int main() {
             cout << itp->first << " [" << get<0>(itp->second) << ", " << get<1>(itp->second) << ", " << get<2>(itp->second) << "]\n";
         }
     }
-    
+    // ================== case 2 decrease================
+        else if (choice == 2) { 
+            string name;
+            cout << "Name to decrease: ";
+            getline(cin, name); // read the whole line
 
+            auto it2 = villagers.find(name); // find by name
+        if (it2 == villagers.end()) {
+            cout << "Not found.\n"; }// no such villager
+        else {
+            int f = get<0>(it2->second); // current friendship
+            if (f > 0) f--;              // don't go below 0
+            get<0>(it2->second) = f;     // write it back
+            cout << "OK: " << name << " -> " << f << "\n";
+    }
+
+        // show everything after this action
+        cout << "Villager details:\n";
+        for (map<string, tuple<int,string,string>>::iterator itp = villagers.begin(); itp != villagers.end(); ++itp) {
+            cout << itp->first << " ["<< get<0>(itp->second) << ", " << get<1>(itp->second) << ", " << get<2>(itp->second) << "]\n";
+    }
+}
 
 
 
