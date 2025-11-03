@@ -3,6 +3,7 @@
 #include <vector>
 #include <tuple>   
 #include <string> 
+#include <limits>
 using namespace std;
 
 int main() {
@@ -20,35 +21,84 @@ int main() {
 }
 
     // access the map using iterators
-    cout << "\nVillagers and their favorite colors (iterators):" << endl;
-    for (map<string, vector<string>>::iterator it = villagerColors.begin(); 
-                                               it != villagerColors.end(); ++it) {
-        cout << it->first << ": ";
-        for (auto color : it->second) {
-            cout << color << " ";
-        }
-        cout << endl;
-    }
+    cout << "\nVillager details (iterators):" << endl;
+    for (map<string, tuple<int,string,string>>::iterator it = villagers.begin();
+        it != villagers.end(); ++it) {
+        // print: friendship, species, catchphrase
+        cout << it->first << " [" << get<0>(it->second) << ", " << get<1>(it->second) << ", " << get<2>(it->second) << "]\n";
+}
+
 
     // delete an element
     villagers.erase("Raymond");
 
     // search for an element using .find() to avoid errors
     string searchKey = "Audie";
-    auto it = villagerColors.find(searchKey);
-    if (it != villagerColors.end()) {  // the iterator points to beyond the end of the map
-                                       // if searchKey is not found
-        cout << "\nFound " << searchKey << "'s favorite colors: ";
-        for (auto color : it->second)  // range loop to traverse the value/vector
-            cout << color << " ";
+    auto it = villagers.find(searchKey);
+    if (it != villagers.end()) {  // the iterator points to beyond the end of the map
+        // if searchKey is not found                             
+        cout << "\nFound " << searchKey << ": ["
+         << get<0>(it->second) << ", "   // friendship
+         << get<1>(it->second) << ", "   // species
+         << get<2>(it->second) << "]\n"; // catchphrase
         cout << endl;
     } else
         cout << endl << searchKey << " not found." << endl;
 
     // report size, clear, report size again to confirm map operations
-    cout << "\nSize before clear: " << villagerColors.size() << endl;
-    villagerColors.clear();
-    cout << "Size after clear: " << villagerColors.size() << endl;
+    cout << "\nSize before clear: " << villagers.size() << endl;
+    villagers.clear();
+    cout << "Size after clear: " << villagers.size() << endl;
     
+    // ======================== M3 =============================
+    while (true) {  // the menu
+        cout << "\nMenu:\n";
+        cout << "1. Increase Friendship\n";
+        cout << "2. Decrease Friendship\n";
+        cout << "3. Search for Villager\n";
+        cout << "4. Exit\n";
+        cout << "Enter choice: ";
+    
+        int choice;
+
+        if (!(cin >> choice)) {          // make sure read menu number safely
+        cin.clear();                 // reset fail state
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // drop bad input
+        cout << "Invalid input.\n";
+        continue;                    // ask again
+    }
+        if (choice == 1) { // increase
+        string name;
+        cout << "Name to increase: ";
+        getline(cin, name); // read the whole line
+
+        auto it2 = villagers.find(name); // try to find this name in the map
+        if (it2 == villagers.end()) {
+            cout << "Not found.\n"; // no such villager
+        } else {
+            int f = get<0>(it2->second); // current friendship
+            if (f < 10) f++;             // keep it within 0..10
+            get<0>(it2->second) = f;     // write it back
+            cout << "OK: " << name << " -> " << f << "\n";
+        }
+
+        // show everything after this action
+        cout << "Villager details:\n";
+        for (map<string, tuple<int,string,string>>::iterator itp = villagers.begin();
+            itp != villagers.end(); ++itp) {
+            cout << itp->first << " [" << get<0>(itp->second) << ", " << get<1>(itp->second) << ", " << get<2>(itp->second) << "]\n";
+        }
+    }
+    
+
+
+
+
+
+
+
+
+    }
+
     return 0;
 }
